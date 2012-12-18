@@ -10,14 +10,21 @@ Checkout [Demo bar and pie charts](http://adodson.com/raphael.charts.js)
 * [jquery.js](http://jquery.com/)
 
 
-# Creating a bar graph
+# Initiate RaphaelJs
 
-    Raphael(id, width, height).barGraph(width, height, values, labels, 
-        [barParam1,barParam2,..], barMaxWidth);
+	var chart = Raphael(id, width, height);
 
 * _id_: Element id
 * _width_: Width of the target element
 * _height_: Height of the target element
+
+
+# Creating a bar graph
+
+    chart.barGraph(width, height, values, labels, 
+        [barParam1,barParam2,..], barMaxWidth);
+
+
 * _values_: An array of values to create the graphs, these can be integers or strings, the label value will be present above each bar
 * _labels_: An array of labels to form the bottom of the graph
 * _barParam#_: An object defining how a bar will be styled, if you want alternating color then include many of these in an array,
@@ -26,13 +33,13 @@ Checkout [Demo bar and pie charts](http://adodson.com/raphael.charts.js)
 
 # Creating a ring chart
 
-    Raphael(id, width, height).pieGraph(width, height, radius, values, labels, 
+    chart.pieGraph(x, y, radius, values, labels, 
         [pieParam1,pieParam2,..]);
 
-* _id_: Element id
-* _width_: Width of the target element
-* _height_: Height of the target element
+* _x_: Pixels from left for the center of the ring
+* _y_: Pixels from top for the center of the ring
 * _radius_: Radius of the ring
+
 * _values_: An array of values to create the graphs, these can be integers or strings, the label value will be present above each bar
 * _labels_: An array of labels to form the bottom of the graph
 * _pieParam#_: An object defining how to style a section of a ring, width/color/etc.., if you want alternating color then include many of these in an array, include as many as you have values for unique styles
