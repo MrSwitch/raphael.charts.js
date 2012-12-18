@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Raphaël · Pie Chart</title>
+        <style>
+body {
+    background: #E7E7E8;
+    color: #fff;
+    font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+    text-align: center;
+}
+.holder{
+    display: inline-block;
+    width: 400px;
+    height: 400px;
+}
+
+ul li{
+    border-left: 10px solid transparent;
+}
+</style>
+        <script src="/_packages/raphael.js"></script>
+        <script src="/_packages/jquery.js"></script>
+        <script src="raphael.charts.js"></script>
+    </head>
+    <body>
+
+        <ul id="data">
+            <li style="border-color:#BCBDC0;" data-color="#BCBDC0">4% Japan</li>
+            <li style="border-color:#939598;" data-color="#939598">8% New Zealand</li>
+            <li style="border-color:#7D7F82;" data-color="#7D7F82">10% UK</li>
+            <li style="border-color:#636466;" data-color="#636466">13% Greater China</li>
+            <li style="border-color:#231F20;" data-color="#231F20">17% Continental Europe</li>
+            <li style="border-color:#76B043;" data-color="#76B043">48% Australia</li>
+        </ul>
+
+        <div id="pieholder" class="holder"></div>
+        <div id="barholder" class="holder"></div>
+
+
+        <ul id="twindata">
+            <li data-title="Japan">2%/4% Japan</li>
+            <li data-title="New Zealand">20%/8% New Zealand</li>
+            <li data-title="UK">15%/10% UK</li>
+            <li data-title="Greater China">17%/13% Greater China</li>
+            <li data-title="Continental Europe">17%/17% Continental Europe</li>
+            <li data-title="Australia">18%/38% Australia</li>
+        </ul>
+
+        <div id="bar2holder" class="holder"></div>
+        <script>
+
+
+$(function(){
+    var values = [],
+        labels = [],
+        params = [],
+        paramsPie = [];
+
+    $("ul").hide();
+
+    $("ul#data li").each(function () {
+        paramsPie.push({stroke: $(this).attr('data-color'), "stroke-width": 30});
+        params.push({fill: $(this).attr('data-color'), stroke: 'none'});
+        values.push(parseInt($(this).text().match(/\d+/)[0], 10));
+        labels.push($(this).text().replace(/\s/,'\n'));
+    });
+
+//    $("#pieholder,#barholder,#bar2holder").hide();
+
+    Raphael("pieholder", 400, 400).pieChart(200, 200, 95, values, labels, paramsPie);
+
+    Raphael("barholder", 400, 300).barGraph(350, 300, values, labels, params);
+
+    // Twin Bar example
+    values = [];
+    labels = [];
+
+    $("ul#twindata li").each(function () {
+        var m = $(this).text().match(/(\d+\%?)\/(\d+\%?)/);
+        values.push(m?m[1]:0);
+        values.push(m?m[2]:0);
+        labels.push($(this).attr("data-title").replace(/\s/,'\n'));
+    });
+
+    Raphael("bar2holder", 400, 300).barGraph(350, 300, values, labels, 
+        [{fill: "#a6E073", stroke:'none', 'transform' : "t3,0" },{fill: "#76B043", stroke:'none', 'transform' : "t-3,0"}], 30);
+
+});
+
+        </script>
+    </body>
+</html>
