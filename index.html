@@ -26,6 +26,9 @@ ul li{
     </head>
     <body>
 
+        <h1>raphael.charts.js</h1>
+        <p><a href="http://github.com/MrSwitch/raphael.charts.js">http://github.com/mrswitch/raphael.charts.js</a></p>
+
         <ul id="data">
             <li style="border-color:#BCBDC0;" data-color="#BCBDC0">4% Japan</li>
             <li style="border-color:#939598;" data-color="#939598">8% New Zealand</li>
@@ -40,48 +43,60 @@ ul li{
 
 
         <ul id="twindata">
-            <li data-title="Japan">2%/4% Japan</li>
-            <li data-title="New Zealand">20%/8% New Zealand</li>
-            <li data-title="UK">15%/10% UK</li>
-            <li data-title="Greater China">17%/13% Greater China</li>
-            <li data-title="Continental Europe">17%/17% Continental Europe</li>
-            <li data-title="Australia">18%/38% Australia</li>
+            <li data-title="Japan">2.1/4% Japan</li>
+            <li data-title="New Zealand">20.8/8% New Zealand</li>
+            <li data-title="UK">15.2/10% UK</li>
+            <li data-title="Greater China">17.5/13% Greater China</li>
+            <li data-title="Continental Europe">17.5/17% Continental Europe</li>
+            <li data-title="Australia">18.12/38% Australia</li>
         </ul>
 
         <div id="bar2holder" class="holder"></div>
+
+<footer>
+    <p><a style="color:gray;font-size:0.8em;text-decoration:none;" href="http://adodson.com">by Andrew Dodson</a></p>
+</footer>
+
         <script>
 
 
 $(function(){
+
     var values = [],
         labels = [],
+        labelsBar = [],
         params = [],
         paramsPie = [];
+
+    var reg = /^([\d\,\.]+\%?)(\/([\d\,\.]+\%?))*/;
+
 
     $("ul").hide();
 
     $("ul#data li").each(function () {
         paramsPie.push({stroke: $(this).attr('data-color'), "stroke-width": 30});
         params.push({fill: $(this).attr('data-color'), stroke: 'none'});
-        values.push(parseInt($(this).text().match(/\d+/)[0], 10));
-        labels.push($(this).text().replace(/\s/,'\n'));
+        values.push($(this).text().match(reg)[1]);
+        labels.push($(this).text().replace(/^\s*/,'').replace(/\s/g,'\n'));
+        labelsBar.push($(this).text().replace(reg,'').replace(/^\s*/,'').replace(/\s/g,'\n'));
     });
 
 //    $("#pieholder,#barholder,#bar2holder").hide();
 
-    Raphael("pieholder", 400, 400).pieChart(200, 200, 95, values, labels, paramsPie);
+    Raphael("pieholder", 400, 400).pieChart(200, 200, 75, values, labels, paramsPie);
 
-    Raphael("barholder", 400, 300).barGraph(350, 300, values, labels, params);
+    Raphael("barholder", 400, 300).barGraph(350, 300, values, labelsBar, params);
 
     // Twin Bar example
     values = [];
     labels = [];
 
     $("ul#twindata li").each(function () {
-        var m = $(this).text().match(/(\d+\%?)\/(\d+\%?)/);
+
+        var m = $(this).text().match(reg);
         values.push(m?m[1]:0);
-        values.push(m?m[2]:0);
-        labels.push($(this).attr("data-title").replace(/\s/,'\n'));
+        values.push(m?m[3]:0);
+        labels.push($(this).attr("data-title").replace(reg,'').replace(/^\s*/,'').replace(/\s/,'\n'));
     });
 
     Raphael("bar2holder", 400, 300).barGraph(350, 300, values, labels, 

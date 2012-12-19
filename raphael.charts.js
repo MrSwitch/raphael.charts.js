@@ -23,7 +23,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, params) {
         delta = 10,
         bcolor = "#6A747C", //Raphael.hsb(start, 1, 1),
         process = function (j) {
-            var value = values[j],
+            var value = parseInt(typeof(values[j])==="string"?values[j].replace(/[^\d\.]/g,''):values[j],10),
                 angleplus = 360 * value / total,
                 popangle = angle + (angleplus / 2),
 //                color = colors[j],
@@ -56,7 +56,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, params) {
         };
 
     for (var i = 0, ii = values.length; i < ii; i++) {
-        total += values[i];
+        total += parseInt(typeof(values[i])==="string"?values[i].replace(/[^\d\.]/g,''):values[i],10);
     }
     for (i = 0; i < ii; i++) {
         process(i);
@@ -134,7 +134,7 @@ Raphael.fn.barGraph = function (w, h, values, labels, params, barwidth) {
                     });
 
             // Fix for creation in a hidden div
-            $('tspan:first-child', txt.node).attr('dy', 0);
+//            $('tspan:first-child', txt.node).attr('dy', 0);
         },
         bar = function (j) {
 
@@ -165,7 +165,7 @@ Raphael.fn.barGraph = function (w, h, values, labels, params, barwidth) {
                 });
 
             // Fix for creation in a hidden div
-//            $('tspan:first-child', txt.node).attr('dy', 0);
+            $('tspan:first-child', txt.node).attr('dy', 0);
 
             p.mouseover(function () {
                 txt.stop().animate({fill: "black"}, ms, "elastic");
